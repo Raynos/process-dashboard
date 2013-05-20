@@ -7,21 +7,30 @@
   "repository": "git://github.com/Raynos/process-dashboard.git",
   "main": "index",
   "homepage": "https://github.com/Raynos/process-dashboard",
-  "contributors": [{
-    "name": "Raynos"
-  }],
+  "contributors": [
+    {
+      "name": "Raynos"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/Raynos/process-dashboard/issues",
     "email": "raynos2@gmail.com"
   },
-  "dependencies": {},
+  "dependencies": {
+    "optimist": "~0.5.0",
+    "routes-router": "~0.1.1",
+    "ecstatic": "~0.4.2",
+    "serve-browserify": "~0.1.1"
+  },
   "devDependencies": {
     "tape": "~1.0.2"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "http://github.com/Raynos/process-dashboard/raw/master/LICENSE"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/Raynos/process-dashboard/raw/master/LICENSE"
+    }
+  ],
   "scripts": {
     "test": "node ./test/index.js"
   },
@@ -37,7 +46,7 @@
       "opera/next",
       "safari/5.1..latest",
       "ipad/6.0..latest",
-      "iphone/6.0..latest"
+      "iphone/6.0..latest",
       "android-browser/4.2..latest"
     ]
   }

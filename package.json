@@ -25,7 +25,9 @@
     "send-data": "~1.1.2",
     "jsonml-stringify": "~0.1.1",
     "node-env": "~0.1.2",
-    "require-fresh": "~0.1.2"
+    "require-fresh": "~0.1.2",
+    "process": "~0.5.1",
+    "continuable": "~1.0.1"
   },
   "devDependencies": {
     "tape": "~1.0.2",

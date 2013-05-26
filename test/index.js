@@ -1,8 +1,6 @@
-var test = require("tape")
+var process = require("process")
 
-var process-dashboard = require("../index")
+// Set the location of the profile files to a test directory
+process.env.PDASH_DIRECTORY = "test.process-dash"
 
-test("process-dashboard is a function", function (assert) {
-    assert.equal(typeof process-dashboard, "function")
-    assert.end()
-})
+require("./profile-repo")

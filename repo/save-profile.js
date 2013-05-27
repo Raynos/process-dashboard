@@ -2,5 +2,5 @@
 module.exports = saveProfile
 
 function saveProfile(profile) {
-    var profileName = profile
+    var profileName = profile.profileName
 }

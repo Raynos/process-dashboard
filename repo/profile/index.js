@@ -20,7 +20,6 @@ var saveProfile = require("./save-profile")
 
     {
         name: String,
-        id: uuid(),
         command: "node",
         args: ["app.js"],
         options: {
@@ -42,6 +41,13 @@ var saveProfile = require("./save-profile")
 
     Like what the defaultProfile is and what the sorted index
         of the profiles looks like
+
+    On disk this looks like
+
+    ~/.config/process-dash
+        - _meta.json
+        - profile-name-1.json
+        - profile-name-2.json
 */
 
 module.exports = {
@@ -50,7 +56,6 @@ module.exports = {
     addCommand: addCommand,
     editCommand: editCommand,
     getCommand: getCommand,
-    createProfile: createProfile,
     ensureDirectory: ensureDirectory,
     saveProfile: saveProfile
 }

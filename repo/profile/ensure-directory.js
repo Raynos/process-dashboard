@@ -7,18 +7,11 @@ var env = process.env
 var chain = require("continuable/chain")
 var map = require("continuable/map")
 var of = require("continuable/of")
+var either = require("continuable/either")
 
+// ensureDirectory := () => Continuable<String>
+// ensureDirectory returns the directory where profiles are stored
 module.exports = ensureDirectory
-
-function either(cont, left, right) {
-    return function continuable(callback) {
-        cont(function (err, value) {
-            var next = err ? left(err) : right(value)
-
-            next(callback)
-        })
-    }
-}
 
 function ensureDirectory() {
     var homeDir = home()

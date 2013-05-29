@@ -4,7 +4,7 @@ A profile is a document with command information.
 
 ```js
 {
-    commands: Array<Command>,
+    commands: Object<String, Command>,
     profileName: String
 }
 ```
@@ -25,25 +25,10 @@ A Command is a record of
 }
 ```
 
-You can also get all the profiles. All the profiles contains
-    some more meta data
-
-```js
-{
-    profiles: [Profile],
-    defaultProfile: String,
-    sorted: [String]
-}
-```
-
-Like what the defaultProfile is and what the sorted index
-    of the profiles looks like
-
 On disk this looks like
 
 ```
 ~/.config/process-dash
-    _meta.json
     profile-name-1.json
     profile-name-2.json
 ```

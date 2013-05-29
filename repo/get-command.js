@@ -7,12 +7,8 @@ module.exports = getCommand
 //      => Continuable<Command>
 function getCommand(profileName, commandName) {
     return map(getProfile(profileName), function (profile) {
-        if (profile === null) {
-            return null
-        }
-
-        return profile.commands.filter(function (command) {
-            return command.name === commandName
-        })[0] || null
+        return profile ?
+            (profile.commands[commandName] || null) :
+            null
     })
 }

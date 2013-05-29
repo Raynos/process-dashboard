@@ -10,7 +10,7 @@ module.exports = saveProfile
 function saveProfile(profile) {
     return chain(ensureDirectory(), function (loc) {
         var payload = JSON.stringify(profile, null, "    ")
-        var fileLoc = path.join(loc, profile.profileName + ".json")
+        var fileLoc = path.join(loc, profile.name + ".json")
 
         return fs.writeFile.bind(null, fileLoc, payload)
     })

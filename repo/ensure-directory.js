@@ -36,10 +36,6 @@ function ensureDirectory() {
         return fs.stat.bind(null, pdashDir)
     })
 
-
-
-    console.log("config", configDir, pdashDir)
-
     var pdashDirExists = either(pdashDirStat, function () {
         return fs.mkdir.bind(null, pdashDir)
     }, function (stat) {

@@ -1,6 +1,17 @@
-// saveProfile := (Profile) => Continuable<{ created: Boolean }>
+var fs = require("fs")
+var path = require("path")
+var chain = require("continuable/chain")
+
+var ensureDirectory = require("./ensure-directory")
+
+// saveProfile := (Profile) => Continuable<void>
 module.exports = saveProfile
 
 function saveProfile(profile) {
-    var profileName = profile.profileName
+    return chain(ensureDirectory(), function (loc) {
+        var payload = JSON.stringify(profile, null, "    ")
+        var fileLoc = path.join(loc, profile.profileName + ".json")
+
+        return fs.writeFile.bind(null, fileLoc, payload)
+    })
 }

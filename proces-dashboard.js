@@ -2,7 +2,7 @@ var http = require("http")
 var console = require("console")
 var argv = require("optimist").argv
 
-var router = require("./routes")
+var router = require("./router")
 
 var PORT = argv.port || argv.p || 5842
 var server = http.createServer(router)

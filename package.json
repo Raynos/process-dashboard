@@ -32,7 +32,12 @@
     "xtend": "~2.0.4",
     "continuable-list": "~0.1.3",
     "resolve": "~0.3.1",
-    "write-html": "~0.1.2"
+    "write-html": "~0.1.2",
+    "unpack-element": "~1.0.3",
+    "http-methods": "~0.1.0",
+    "global": "~2.0.5",
+    "xhr": "~1.1.3",
+    "insert": "~1.0.1"
   },
   "devDependencies": {
     "tape": "~1.0.2",
@@ -46,8 +51,8 @@
   ],
   "scripts": {
     "test": "node ./test/index.js",
-    "start": "node process-dashboard.js",
-    "watch": "nodemon -w ./process-dashboard.js -w ./router.js -w ./lib -w ./routes ./proces-dashboard.js "
+    "start": "node ./process-dashboard.js",
+    "watch": "nodemon -w ./process-dashboard.js -w ./router.js -w ./lib -w ./routes ./process-dashboard.js "
   },
   "testling": {
     "files": "test/index.js",

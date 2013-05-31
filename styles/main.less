@@ -1,40 +1,92 @@
+@applicationMinWidth: 640px;
+@applicationMinHeight: 480px;
+@headerHeight: 32px;
+@footerHeight: 32px;
+
+@sidebarWidth: 280px;
+@sliderWidth: 24px;
+@sliderColor: #ccc;
+
+@headerMargin: 2px;
+@footerMargin: 2px;
+
 html, body {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    min-width: @applicationMinWidth;
+    min-height: @applicationMinHeight;
+}
+
+div {
+    overflow-y: auto;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+    padding: 0;
 }
 
 .sidebar {
-    position: relative;
-    display: inline-block;
-    width: 20%;
-    max-width: 250px;
-    height: 100%;
-}
-
-.profile-header {
-    padding-left: 20px;
-}
-
-.wrapper {
-    position: relative;
-    height: 100%;
-    width: 100%;
-}
-
-.profiles {
-    overflow-y: auto;
     position: absolute;
-    height: 70%;
-    width: 100%;
+    width: @sidebarWidth;
     top: 0;
+    bottom: 0;
+    left: 0;
+
+    .slider {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: (@sidebarWidth - @sliderWidth);
+        width: @sliderWidth;
+        background-color: @sliderColor;
+    }
+
+    .header {
+        position: absolute;
+        height: @headerHeight;
+        left: 0;
+        right: @sliderWidth;
+        top: 0;
+
+        h2 {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: @headerMargin;
+            text-align: center;
+            height: (@headerHeight - 2 * @headerMargin);
+        }
+    }
+    
+    .profiles {
+        position: absolute;
+        top: @headerHeight;
+        bottom: @footerHeight;
+        left: 0;
+        right: @sliderWidth;
+    }
+
+    .footer {
+        position: absolute;
+        height: @footerHeight;
+        left: 0;
+        right: @sliderWidth;
+        bottom: 0;
+
+        button {
+            position: absolute;
+            top: @footerMargin;
+            bottom: @footerMargin;
+            left: @footerMargin;
+            right: @footerMargin;
+        }
+    }
 }
 
-.profile-controls {
-    padding-left: 20px;
-    position: absolute;
-    height: 10%;
-    width: 100%;
-    bottom: 0;
-}
+
+
+

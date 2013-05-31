@@ -1,7 +1,8 @@
 var xhr = require("xhr")
 
 module.exports = {
-    addProfile: addProfile
+    addProfile: addProfile,
+    removeProfile: removeProfile
 }
 
 function addProfile(profile, callback) {
@@ -9,5 +10,12 @@ function addProfile(profile, callback) {
         uri: "/profiles/" + profile.name,
         method: "PUT",
         json: profile
+    }, callback)
+}
+
+function removeProfile(profileName, callback) {
+    xhr({
+        uri: "/profiles/" + profileName,
+        method: "DELETE"
     }, callback)
 }

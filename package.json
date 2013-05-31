@@ -35,7 +35,7 @@
     "write-html": "~0.1.2",
     "unpack-element": "~1.0.3",
     "http-methods": "~0.1.0",
-    "global": "~2.0.5",
+    "global": "~2.0.6",
     "xhr": "~1.2.2",
     "insert": "~1.0.1",
     "body": "~1.1.1",

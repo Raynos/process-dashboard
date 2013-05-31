@@ -1,6 +1,6 @@
 var document = require("global/document")
 var unpack = require("unpack-element")
-var console = require("console")
+var console = require("global/console")
 
 var Router = require("./lib/hash-router")
 var ProfilesUI = require("./ui/profiles")

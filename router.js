@@ -21,6 +21,7 @@ router.addRoute("/css/:appName",
     ServeLess(path.join(__dirname, "styles")))
 
 addRoute("/", "./routes/home.js")
+addRoute("/profiles/:id", "./routes/profiles-item.js")
 
 module.exports = router
 

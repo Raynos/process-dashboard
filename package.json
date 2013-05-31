@@ -33,15 +33,13 @@
     "continuable-list": "~0.1.3",
     "resolve": "~0.3.1",
     "write-html": "~0.1.2",
-<<<<<<< HEAD
-    "http-methods": "~0.1.0"
-=======
     "unpack-element": "~1.0.3",
     "http-methods": "~0.1.0",
     "global": "~2.0.5",
-    "xhr": "~1.1.3",
-    "insert": "~1.0.1"
->>>>>>> 2593efa58e07c6a6a6f9b41268b4319187a13f1c
+    "xhr": "~1.2.2",
+    "insert": "~1.0.1",
+    "body": "~1.1.1",
+    "routes": "~0.2.0"
   },
   "devDependencies": {
     "tape": "~1.0.2",

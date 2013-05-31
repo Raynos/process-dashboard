@@ -1,11 +1,8 @@
+var profileItem = require("./profile")
+
 module.exports = Main
 
 function Main(profiles) {
-    profiles = []
-    for (var i = 0; i < 100; i++) {
-        profiles[i] = { name: String(i) }
-    }
-
     return ["body.main", [
         [".sidebar", [
             [".slider"],
@@ -23,8 +20,4 @@ function Main(profiles) {
         ]],
         ["script", { src: "/js/main" }]
     ]]
-}
-
-function profileItem(profile) {
-    return ["li", profile.name]
 }

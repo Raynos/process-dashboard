@@ -1,7 +1,7 @@
 @applicationMinWidth: 640px;
 @applicationMinHeight: 480px;
 @headerHeight: 32px;
-@footerHeight: 32px;
+@footerHeight: 64px;
 
 @sidebarWidth: 280px;
 @sliderWidth: 24px;
@@ -71,6 +71,12 @@ h1, h2, h3, h4 {
         right: @sliderWidth;
     }
 
+    .profile-item {
+        .profile-name {
+            margin-right: 5px;
+        }
+    }
+
     .footer {
         position: absolute;
         height: @footerHeight;
@@ -86,4 +92,9 @@ h1, h2, h3, h4 {
         //     right: @footerMargin;
         // }
     }
+}
+
+.main {
+    position: absolute;
+    left: @sidebarWidth;
 }

@@ -5,10 +5,10 @@ module.exports = Main
 function Main(data) {
     return ["body", [
         [".sidebar", {
-            "data-marker-root": "profiles"
+            "data-marker": "profiles"
         }, Profiles(data.profiles)],
         [".main", {
-            "data-marker-root": "commands",
+            "data-marker": "commands",
         }, Commands(data.mainProfile)],
         ["script", { src: "/js/main" }]
     ]]

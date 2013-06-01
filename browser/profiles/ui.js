@@ -6,7 +6,7 @@ var extend = require("xtend/mutable")
 var EventEmitter = require("events").EventEmitter
 
 var submit = require("../lib/submit")
-var profileItem = require("../../templates/profile")
+var profileItem = require("../../templates/profileItem")
 
 module.exports = ProfilesUI
 

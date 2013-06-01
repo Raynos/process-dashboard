@@ -15,10 +15,10 @@ function Main(data) {
 }
 
 function Commands(mainProfile) {
-    return [
+    return mainProfile ? [
         ["h2.command-header", mainProfile.name],
         ["ul", {
             "data-marker": "commandsList"
         }, []]
-    ]
+    ] : []
 }

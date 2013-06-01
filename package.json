@@ -23,7 +23,7 @@
     "serve-browserify": "~0.1.1",
     "npm-less": "~0.1.2",
     "send-data": "~1.1.2",
-    "jsonml-stringify": "~0.1.1",
+    "jsonml-stringify": "~0.1.7",
     "node-env": "~0.1.2",
     "require-fresh": "~0.1.2",
     "process": "~0.5.1",

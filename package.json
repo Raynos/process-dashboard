@@ -20,7 +20,7 @@
     "optimist": "~0.5.0",
     "routes-router": "~0.1.1",
     "ecstatic": "~0.4.2",
-    "serve-browserify": "~0.1.1",
+    "serve-browserify": "~0.2.2",
     "npm-less": "~0.1.2",
     "send-data": "~1.1.2",
     "jsonml-stringify": "~0.1.8",

@@ -1,29 +1,24 @@
-var profileItem = require("./profile")
+var Profiles = require("./profile")
 
 module.exports = Main
 
-function Main(profiles) {
-    return ["body.main", [
-        [".sidebar", { "data-marker": "profiles" }, [
-            [".slider"],
-            [".header", [
-                ["h2.profile-header", "Profiles"]
-            ]],
-            [".profiles", [
-                ["ul", {
-                    "data-marker": "profilesList"
-                }, profiles.map(profileItem)]
-            ]],
-            [".footer", [
-                ["button", {
-                    "data-marker": "addProfile"
-                }, "Add Profile"],
-                ["input", {
-                    "data-marker": "profileName",
-                    "placeholder": "Name your new profile"
-                }]
-            ]]
-        ]],
+function Main(data) {
+    return ["body", [
+        [".sidebar", {
+            "data-marker-root": "profiles"
+        }, Profiles(data.profiles)],
+        [".main", {
+            "data-marker-root": "commands",
+        }, Commands(data.mainProfile)],
         ["script", { src: "/js/main" }]
     ]]
+}
+
+function Commands(mainProfile) {
+    return [
+        ["h2.command-header", mainProfile.name],
+        ["ul", {
+            "data-marker": "commandsList"
+        }, []]
+    ]
 }

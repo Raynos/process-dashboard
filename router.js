@@ -1,11 +1,12 @@
 var path = require("path")
-var resolve = require("resolve").sync
 var Router = require("routes-router")
 var Methods = require("http-methods")
 var NODE_ENV = require("node-env")
 var RequireFresh = require("require-fresh")
 var ServeBrowserify = require("serve-browserify")
 var ServeLess = require("npm-less/serve")
+
+var ModuleLoader = require("./lib/module-loader")
 
 var loadTemplate = RequireFresh({
     dir: path.join(__dirname, "templates"),
@@ -31,28 +32,12 @@ function addRoute(uri, module) {
         handler = Methods(handler)
     }
 
-    router.addRoute(uri, function (req, res, params, splats) {
+    router.addRoute(uri, function onRoute(req, res, params, splats) {
         handler(req, res, {
             params: params,
             splats: splats,
-            load: Loader(path.dirname(module)),
+            load: ModuleLoader(path.dirname(module)),
             loadTemplate: loadTemplate
         })
     })
-}
-
-function Loader(basedir) {
-    var moduleCache = {}
-
-    return load
-
-    function load(moduleUri) {
-        if (moduleCache[moduleUri]) {
-            return moduleCache[moduleUri]
-        }
-
-        var resolution = resolve(moduleUri, { basedir: basedir })
-        var module = moduleCache[moduleUri] = require(resolution)
-        return module
-    }
 }

@@ -1,39 +1,24 @@
 var document = require("global/document")
 var unpack = require("unpack-element")
-var console = require("global/console")
 
 var Router = require("./lib/hash-router")
-var ProfilesUI = require("./ui/profiles")
 var client = require("./client")
-var router = Router()
+var Profiles = require("./profiles")
 
+// instantiate HTML5 #/ router
+var router = Router()
+// configure options to be passed to every sub app
+var opts = {
+    router: router,
+    client: client
+}
+// extract top level elements
 var elems = unpack(document.body)
 
+// if elems.profiles then configure profiles sub app
 if (elems.profiles) {
-    var profiles = ProfilesUI(elems.profiles)
-
-    profiles.on("newProfile", function (profile) {
-        client.addProfile(profile, function (err) {
-            if (err) {
-                return console.error("error adding profile", err)
-            }
-
-            profiles.addProfile(profile)
-        })
-    })
-
-    router.addRoute("/profiles/:id/delete", function (hash, opts) {
-        var id = opts.params.id
-
-        client.removeProfile(id, function (err) {
-            if (err) {
-                return console.error("error in removing profile", err)
-            }
-
-            profiles.removeProfile(id)
-            router.go("/profiles")
-        })
-    })
+    Profiles(elems.profiles, opts)
 }
 
+// start router
 router.applyChange()

@@ -13,8 +13,15 @@ function homePage(req, res, opts) {
     writer.writeHead(stringify(head("Process dashboard")))
 
     getProfiles()(function (err, profiles) {
-        var page = Mainpage(profiles)
+        var page = Mainpage(viewModel(profiles))
 
         writer.writeBody(stringify(page))
     })
+}
+
+function viewModel(profiles) {
+    return {
+        profiles: profiles,
+        mainProfile: profiles[0]
+    }
 }

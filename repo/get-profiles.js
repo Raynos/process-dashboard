@@ -1,4 +1,5 @@
 var chain = require("continuable/chain")
+var map = require("continuable/map")
 var list = require("continuable-list")
 var fs = require("fs")
 
@@ -14,7 +15,7 @@ function getProfiles() {
         return fs.readdir.bind(null, loc)
     })
 
-    return chain(files, function (files) {
+    var profiles = chain(files, function (files) {
         var profiles = files.map(function (file) {
             var profileName = file.replace(jsonFileType, "")
             return getProfile(profileName)
@@ -22,4 +23,12 @@ function getProfiles() {
 
         return list(profiles)
     })
+
+    return map(profiles, function (profiles) {
+        return profiles.sort(byName)
+    })
+}
+
+function byName(left, right) {
+    return left.name < right.name ? -1 : 1
 }

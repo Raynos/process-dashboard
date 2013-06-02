@@ -1,6 +1,7 @@
 var test = require("tape")
 var path = require("path")
 var fs = require("fs")
+var rimraf = require("rimraf")
 var process = require("process")
 
 var ensureDirectory = require("../repo/ensure-directory")
@@ -159,5 +160,13 @@ test("removeProfile removes from disk", function (assert) {
 
             assert.end()
         })
+    })
+})
+
+test("cleanup disk", function (assert) {
+    rimraf(dir, function (err) {
+        assert.ifError(err)
+
+        assert.end()
     })
 })

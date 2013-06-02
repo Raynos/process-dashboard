@@ -2,7 +2,7 @@ var unpack = require("unpack-element")
 var append = require("insert/append")
 var remove = require("insert/remove")
 var dom = require("jsonml-stringify/dom")
-var extend = require("xtend")
+var extend = require("util")._extend
 var EventEmitter = require("events").EventEmitter
 
 var submit = require("../lib/submit")

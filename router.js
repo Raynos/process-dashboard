@@ -24,6 +24,10 @@ router.addRoute("/css/:appName",
 addRoute("/", "./routes/home.js")
 addRoute("/profiles/:id", "./routes/profiles-item.js")
 
+router.close = function () {
+    loadTemplate.close()
+}
+
 module.exports = router
 
 function addRoute(uri, module) {

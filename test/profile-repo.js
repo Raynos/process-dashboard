@@ -1,7 +1,6 @@
 var test = require("tape")
 var path = require("path")
 var fs = require("fs")
-var rimraf = require("rimraf")
 var process = require("process")
 
 var ensureDirectory = require("../repo/ensure-directory")
@@ -12,9 +11,18 @@ var removeProfile = require("../repo/remove-profile")
 var addCommand = require("../repo/add-command")
 var editCommand = require("../repo/edit-command")
 var getProfiles = require("../repo/get-profiles")
+var nukeProfiles = require("../repo/nuke-profiles")
 
 var dir = path.join(process.env.HOME,
     "/.config/test.process-dash")
+
+test("nuke profiles for good measure", function (assert) {
+    nukeProfiles()(function (err) {
+        assert.ifError(err)
+
+        assert.end()
+    })
+})
 
 test("ensureDirectory returns a directory", function (assert) {
     ensureDirectory()(function (err, location) {
@@ -25,6 +33,18 @@ test("ensureDirectory returns a directory", function (assert) {
         fs.stat(dir, function (err, stat) {
             assert.ifError(err)
             assert.ok(stat)
+
+            assert.end()
+        })
+    })
+})
+
+test("assert nukeProfiles kills directory", function (assert) {
+    nukeProfiles()(function (err) {
+        assert.ifError(err)
+
+        fs.stat(dir, function (err) {
+            assert.equal(err.code, "ENOENT")
 
             assert.end()
         })
@@ -164,7 +184,7 @@ test("removeProfile removes from disk", function (assert) {
 })
 
 test("cleanup disk", function (assert) {
-    rimraf(dir, function (err) {
+    nukeProfiles()(function (err) {
         assert.ifError(err)
 
         assert.end()

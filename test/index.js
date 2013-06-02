@@ -6,3 +6,4 @@ process.env.PDASH_DIRECTORY = "test.process-dash"
 require("./profile-repo.js")
 
 require("./http/home.js")
+require("./http/profiles-item.js")

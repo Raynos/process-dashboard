@@ -2,6 +2,7 @@ var fs = require("fs")
 var path = require("path")
 var safeParse = require("safe-json-parse")
 var chain = require("continuable/chain")
+var either = require("continuable/either")
 
 var ensureDirectory = require("./ensure-directory")
 
@@ -13,5 +14,13 @@ function getProfile(profileName) {
         return fs.readFile.bind(null, fileUri)
     })
 
-    return chain(file, safeParse)
+    var profile = chain(file, safeParse)
+
+    return either(profile, function (err, callback) {
+        if (err.code === "ENOENT") {
+            return callback(null, null)
+        }
+
+        return callback(err)
+    })
 }

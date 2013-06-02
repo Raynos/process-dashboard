@@ -6,7 +6,8 @@ var map = require("continuable/map")
 
 module.exports = {
     "PUT": putProfile,
-    "DELETE": deleteProfile
+    "DELETE": deleteProfile,
+    uri: "/profiles/:id"
 }
 
 function putProfile(req, res, opts) {

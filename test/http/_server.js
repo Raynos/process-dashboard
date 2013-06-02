@@ -1,4 +1,5 @@
 var http = require("http")
+var console = require("console")
 var cache = require("continuable-cache")
 
 var RequestProxy = require("../../lib/request-proxy")
@@ -9,14 +10,9 @@ var cachedStartServer = cache(startServer)
 var counter = 0
 
 var server = module.exports = {
-    start: function (callback) {
-        if (isTapeAssert(callback)) {
-            callback = callbackFromTapeAssert(callback)
-        }
-
+    start: function () {
         counter++
-
-        cachedStartServer(callback)
+        cachedStartServer()
     },
     request: RequestProxy(PORT),
     close: function (callback) {
@@ -35,11 +31,11 @@ var server = module.exports = {
     }
 }
 
-function startServer(callback) {
+function startServer() {
     var httpServer = server.httpServer = http.createServer(router)
 
     httpServer.listen(PORT, function () {
-        callback(null)
+        console.log("started server on", PORT)
     })
 }
 

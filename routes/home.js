@@ -1,7 +1,10 @@
 var stringify = require("jsonml-stringify")
 var WriteHtml = require("write-html")
 
-module.exports = homePage
+module.exports = {
+    "GET": homePage,
+    uri: "/"
+}
 
 function homePage(req, res, opts) {
     var getProfiles = opts.load("../repo/get-profiles.js")

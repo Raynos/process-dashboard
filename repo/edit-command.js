@@ -1,17 +1,15 @@
-var chain = require("continuable/chain")
 var extend = require("xtend")
+var async = require("continuable-generators")
 
 var getProfile = require("./get-profile")
 var saveProfile = require("./save-profile")
 
-module.exports = editCommand
+module.exports = async(editCommand)
 
-function editCommand(profileName, command) {
+function* editCommand(profileName, command) {
     var commandName = command.name
-
-    return chain(getProfile(profileName), function (profile) {
-        var existing = profile.commands[commandName] || {}
-        profile.commands[commandName] = extend(existing, command)
-        return saveProfile(profile)
-    })
+    var profile = yield getProfile(profileName)
+    var existing = profile.commands[commandName] || {}
+    profile.commands[commandName] = extend(existing, command)
+    return yield saveProfile(profile)
 }

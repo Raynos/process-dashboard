@@ -5,14 +5,14 @@ var NODE_ENV = require("node-env")
 var RequireFresh = require("require-fresh")
 var ServeBrowserify = require("serve-browserify")
 var ServeLess = require("npm-less/serve")
+var sendError = require("send-data/error")
 
-var ModuleLoader = require("./lib/module-loader")
+var repo = require("./repo")
 
 var loadTemplate = RequireFresh({
     dir: path.join(__dirname, "templates"),
     watch: NODE_ENV !== "production"
 })
-
 var router = Router()
 
 // assets & statics
@@ -21,8 +21,12 @@ router.addRoute("/js/:appName",
 router.addRoute("/css/:appName",
     ServeLess(path.join(__dirname, "styles")))
 
-addRoute("/", "./routes/home.js")
-addRoute("/profiles/:id", "./routes/profiles-item.js")
+// Load and inject dependencies into route handlers
+var Home = require("./routes/home.js")
+var ProfileItem = require("./routes/profiles-item.js")
+
+addRoute("/", Home(repo, loadTemplate))
+addRoute("/profiles/:id", ProfileItem(repo))
 
 router.close = function () {
     loadTemplate.close()
@@ -30,8 +34,7 @@ router.close = function () {
 
 module.exports = router
 
-function addRoute(uri, module) {
-    var handler = require(module)
+function addRoute(uri, handler) {
     if (typeof handler === "object") {
         handler = Methods(handler)
     }
@@ -39,9 +42,11 @@ function addRoute(uri, module) {
     router.addRoute(uri, function onRoute(req, res, params, splats) {
         handler(req, res, {
             params: params,
-            splats: splats,
-            load: ModuleLoader(path.dirname(module)),
-            loadTemplate: loadTemplate
+            splats: splats
+        }, function (err) {
+            if (err) {
+                sendError(req, res, err)
+            }
         })
     })
 }

@@ -1,12 +1,11 @@
 var rimraf = require("rimraf")
-var chain = require("continuable/chain")
+var async = require("continuable-generators")
 
 var ensureDirectory = require("./ensure-directory")
 
-module.exports = nukeProfiles
+module.exports = async(nukeProfiles)
 
-function nukeProfiles() {
-    return chain(ensureDirectory(), function (loc) {
-        return rimraf.bind(null, loc)
-    })
+function* nukeProfiles() {
+    var loc = yield ensureDirectory()
+    return yield rimraf.bind(null, loc)
 }

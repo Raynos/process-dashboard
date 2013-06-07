@@ -1,14 +1,11 @@
-var map = require("continuable/map")
+var async = require("continuable-generators")
 var getProfile = require("./get-profile")
 
-module.exports = getCommand
+module.exports = async(getCommand)
 
 //  getCommand := (profileName: String, commandName: String)
 //      => Continuable<Command>
-function getCommand(profileName, commandName) {
-    return map(getProfile(profileName), function (profile) {
-        return profile ?
-            (profile.commands[commandName] || null) :
-            null
-    })
+function* getCommand(profileName, commandName) {
+    var profile = yield getProfile(profileName)
+    return !profile ? null : profile.commands[commandName] || null
 }

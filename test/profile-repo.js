@@ -3,21 +3,13 @@ var path = require("path")
 var fs = require("fs")
 var process = require("process")
 
-var ensureDirectory = require("../repo/ensure-directory")
-var saveProfile = require("../repo/save-profile")
-var getProfile = require("../repo/get-profile")
-var getCommand = require("../repo/get-command")
-var removeProfile = require("../repo/remove-profile")
-var addCommand = require("../repo/add-command")
-var editCommand = require("../repo/edit-command")
-var getProfiles = require("../repo/get-profiles")
-var nukeProfiles = require("../repo/nuke-profiles")
+var repo = require("../repo")
 
 var dir = path.join(process.env.HOME,
     "/.config/test.process-dash")
 
 test("nuke profiles for good measure", function (assert) {
-    nukeProfiles()(function (err) {
+    repo.nukeProfiles()(function (err) {
         assert.ifError(err)
 
         assert.end()
@@ -25,7 +17,7 @@ test("nuke profiles for good measure", function (assert) {
 })
 
 test("ensureDirectory returns a directory", function (assert) {
-    ensureDirectory()(function (err, location) {
+    repo.ensureDirectory()(function (err, location) {
         assert.ifError(err)
         assert.equal(location, path.join(process.env.HOME,
             ".config", "test.process-dash"))
@@ -40,7 +32,7 @@ test("ensureDirectory returns a directory", function (assert) {
 })
 
 test("assert nukeProfiles kills directory", function (assert) {
-    nukeProfiles()(function (err) {
+    repo.nukeProfiles()(function (err) {
         assert.ifError(err)
 
         fs.stat(dir, function (err) {
@@ -52,7 +44,7 @@ test("assert nukeProfiles kills directory", function (assert) {
 })
 
 test("saveProfile saves a profile to disk", function (assert) {
-    saveProfile({
+    repo.saveProfile({
         name: "named-profile",
         commands: {
             "command one": {
@@ -77,7 +69,7 @@ test("saveProfile saves a profile to disk", function (assert) {
 })
 
 test("getProfile reads from disk", function (assert) {
-    saveProfile({
+    repo.saveProfile({
         name: "my-profile",
         commands: {
             "command one": {
@@ -89,7 +81,7 @@ test("getProfile reads from disk", function (assert) {
     })(function (err) {
         assert.ifError(err)
 
-        getProfile("my-profile")(function (err, profile) {
+        repo.getProfile("my-profile")(function (err, profile) {
             assert.ifError(err)
             assert.equal(profile.name, "my-profile")
             var command = profile.commands["command one"]
@@ -101,14 +93,14 @@ test("getProfile reads from disk", function (assert) {
 })
 
 test("addCommand works", function (assert) {
-    addCommand("my-profile", {
+    repo.addCommand("my-profile", {
         name: "command two",
         command: "node",
         args: ["api.js"]
     })(function (err) {
         assert.ifError(err)
 
-        getProfile("my-profile")(function (err, profile) {
+        repo.getProfile("my-profile")(function (err, profile) {
             assert.ifError(err)
 
             var keys = Object.keys(profile.commands)
@@ -123,13 +115,13 @@ test("addCommand works", function (assert) {
 })
 
 test("editCommand works", function (assert) {
-    editCommand("my-profile", {
+    repo.editCommand("my-profile", {
         name: "command two",
         args: ["api.js", "--debug"]
     })(function (err) {
         assert.ifError(err)
 
-        getProfile("my-profile")(function (err, profile) {
+        repo.getProfile("my-profile")(function (err, profile) {
             assert.ifError(err)
 
             var keys = Object.keys(profile.commands)
@@ -146,7 +138,7 @@ test("editCommand works", function (assert) {
 })
 
 test("getCommand works", function (assert) {
-    getCommand("my-profile", "command two")(function (err, command) {
+    repo.getCommand("my-profile", "command two")(function (err, command) {
         assert.ifError(err)
 
         assert.equal(command.name, "command two")
@@ -157,7 +149,7 @@ test("getCommand works", function (assert) {
 })
 
 test("getProfiles returns profiles", function (assert) {
-    getProfiles()(function (err, profiles) {
+    repo.getProfiles()(function (err, profiles) {
         assert.ifError(err)
         assert.equal(profiles.length, 2)
 
@@ -169,7 +161,7 @@ test("getProfiles returns profiles", function (assert) {
 })
 
 test("removeProfile removes from disk", function (assert) {
-    removeProfile("my-profile")(function (err) {
+    repo.removeProfile("my-profile")(function (err) {
         assert.ifError(err)
         var loc = path.join(dir, "my-profile.json")
 
@@ -184,7 +176,7 @@ test("removeProfile removes from disk", function (assert) {
 })
 
 test("cleanup disk", function (assert) {
-    nukeProfiles()(function (err) {
+    repo.nukeProfiles()(function (err) {
         assert.ifError(err)
 
         assert.end()

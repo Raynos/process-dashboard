@@ -1,5 +1,9 @@
 language: node_js
 node_js:
-  - 0.8
-  - "0.10"
-script: npm run travis-test
+  - 0.11.2
+before_script:
+ - nvm install v0.11.2
+ - nvm use v0.11.2
+ - npm install
+ - npm install istanbul coveralls
+script: npm test

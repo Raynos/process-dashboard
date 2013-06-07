@@ -1,14 +1,13 @@
 var fs = require("fs")
 var path = require("path")
-var chain = require("continuable/chain")
+var async = require("continuable-generators")
 
 var ensureDirectory = require("./ensure-directory")
 
-module.exports = removeProfile
+module.exports = async(removeProfile)
 
-function removeProfile(profileName) {
-    return chain(ensureDirectory(), function (loc) {
-        var fileUri = path.join(loc, profileName + ".json")
-        return fs.unlink.bind(null, fileUri)
-    })
+function* removeProfile(profileName) {
+    var loc = yield ensureDirectory()
+    var fileUri = path.join(loc, profileName + ".json")
+    return yield fs.unlink.bind(null, fileUri)
 }

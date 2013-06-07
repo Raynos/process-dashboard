@@ -42,14 +42,14 @@
     "routes": "~0.2.0",
     "continuable-cache": "~0.1.1",
     "rimraf": "~2.1.4",
-    "uuid": "~1.4.1"
+    "uuid": "~1.4.1",
+    "continuable-generators": "~0.1.6",
+    "continuable-para": "git://github.com/Raynos/continuable-para"
   },
   "devDependencies": {
     "tape": "~1.0.2",
     "xtend": "~2.0.5",
-    "request": "~2.21.0",
-    "coveralls": "~2.0.9",
-    "istanbul": "~0.1.36"
+    "request": "~2.21.0"
   },
   "licenses": [
     {
@@ -58,11 +58,12 @@
     }
   ],
   "scripts": {
-    "test": "node ./test/index.js",
-    "travis-test": "istanbul cover ./test/index.js && ((cat coverage/lcov.info | coveralls) || exit 0)",
-    "start": "node ./process-dashboard.js",
-    "watch": "nodemon -w ./process-dashboard.js -w ./router.js -w ./lib -w ./routes ./process-dashboard.js",
-    "cover": "istanbul cover --report none --print detail ./test/index.js"
+    "test": "node --harmony ./test/index.js",
+    "travis-test": "istanbul cover --harmony ./test/index.js && ((cat coverage/lcov.info | coveralls) || exit 0)",
+    "start": "node --harmony ./process-dashboard.js",
+    "watch": "nodemon --harmony -w ./process-dashboard.js -w ./router.js -w ./lib -w ./routes ./process-dashboard.js",
+    "cover": "istanbul cover --report none --print detail ./test/index.js -- --harmony",
+    "view-cover": "istanbul report html && google-chrome ./coverage/index.html"
   },
   "testling": {
     "files": "test/index.js",

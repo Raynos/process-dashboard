@@ -1,25 +1,26 @@
 var stringify = require("jsonml-stringify")
 var WriteHtml = require("write-html")
+var async = require("continuable-generators")
 
-module.exports = {
-    "GET": homePage,
-    uri: "/"
-}
+module.exports = function Home(repo, loadTemplate) {
+    return {
+        "GET": async(homePage),
+        uri: "/"
+    }
 
-function homePage(req, res, opts) {
-    var getProfiles = opts.load("../repo/get-profiles.js")
-    var Mainpage = opts.loadTemplate("main.js")
-    var head = opts.loadTemplate("head.js")
+    function* homePage(req, res, opts) {
+        var Mainpage = loadTemplate("main.js")
+        var head = loadTemplate("head.js")
 
-    var writer = WriteHtml(req, res)
+        var writer = WriteHtml(req, res)
 
-    writer.writeHead(stringify(head("Process dashboard")))
+        writer.writeHead(stringify(head("Process dashboard")))
 
-    getProfiles()(function (err, profiles) {
+        var profiles = yield repo.getProfiles()
+
         var page = Mainpage(viewModel(profiles))
-
         writer.writeBody(stringify(page))
-    })
+    }
 }
 
 function viewModel(profiles) {

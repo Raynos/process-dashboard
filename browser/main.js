@@ -1,8 +1,9 @@
 var document = require("global/document")
 var unpack = require("unpack-element")
+var xhr = require("xhr")
 
 var Router = require("./lib/hash-router")
-var client = require("./client")
+var Client = require("./client")
 var Profiles = require("./profiles")
 
 // instantiate HTML5 #/ router
@@ -10,7 +11,7 @@ var router = Router()
 // configure options to be passed to every sub app
 var opts = {
     router: router,
-    client: client
+    client: Client(xhr)
 }
 // extract top level elements
 var elems = unpack(document.body)

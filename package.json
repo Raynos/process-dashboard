@@ -43,8 +43,9 @@
     "continuable-cache": "~0.1.1",
     "rimraf": "~2.1.4",
     "uuid": "~1.4.1",
-    "continuable-generators": "~0.1.6",
-    "continuable-para": "git://github.com/Raynos/continuable-para"
+    "continuable-generators": "~0.1.7",
+    "continuable-para": "git://github.com/Raynos/continuable-para",
+    "tape": "~1.0.2"
   },
   "devDependencies": {
     "tape": "~1.0.2",

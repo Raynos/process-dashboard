@@ -1,50 +1,36 @@
-var test = require("tape")
+var test = require("../lib/tape-generator")
 var path = require("path")
 var fs = require("fs")
 var process = require("process")
+var both = require("continuable-generators/both")
 
 var repo = require("../repo")
 
 var dir = path.join(process.env.HOME,
     "/.config/test.process-dash")
 
-test("nuke profiles for good measure", function (assert) {
-    repo.nukeProfiles()(function (err) {
-        assert.ifError(err)
-
-        assert.end()
-    })
+test("nuke profiles for good measure", function* (assert) {
+    yield repo.nukeProfiles()
 })
 
-test("ensureDirectory returns a directory", function (assert) {
-    repo.ensureDirectory()(function (err, location) {
-        assert.ifError(err)
-        assert.equal(location, path.join(process.env.HOME,
-            ".config", "test.process-dash"))
+test("ensureDirectory returns a directory", function* (assert) {
+    var location = yield repo.ensureDirectory()
+    assert.equal(location, path.join(process.env.HOME,
+        ".config", "test.process-dash"))
 
-        fs.stat(dir, function (err, stat) {
-            assert.ifError(err)
-            assert.ok(stat)
-
-            assert.end()
-        })
-    })
+    var stat = yield fs.stat.bind(null, dir)
+    assert.ok(stat)
 })
 
-test("assert nukeProfiles kills directory", function (assert) {
-    repo.nukeProfiles()(function (err) {
-        assert.ifError(err)
+test("assert nukeProfiles kills directory", function* (assert) {
+    yield repo.nukeProfiles()
 
-        fs.stat(dir, function (err) {
-            assert.equal(err.code, "ENOENT")
-
-            assert.end()
-        })
-    })
+    var data = yield both(fs.stat.bind(null, dir))
+    assert.equal(data[0].code, "ENOENT")
 })
 
-test("saveProfile saves a profile to disk", function (assert) {
-    repo.saveProfile({
+test("saveProfile saves a profile to disk", function* (assert) {
+    yield repo.saveProfile({
         name: "named-profile",
         commands: {
             "command one": {
@@ -53,23 +39,16 @@ test("saveProfile saves a profile to disk", function (assert) {
                 args: "app.js",
             }
         }
-    })(function (err) {
-        assert.ifError(err)
-        var loc = path.join(dir, "named-profile.json")
-
-        fs.readFile(loc, function (err, str) {
-            assert.ifError(err)
-            var json = JSON.parse(str)
-
-            assert.equal(json.name, "named-profile")
-
-            assert.end()
-        })
     })
+    var loc = path.join(dir, "named-profile.json")
+    var str = yield fs.readFile.bind(null, loc)
+
+    var json = JSON.parse(str)
+    assert.equal(json.name, "named-profile")
 })
 
-test("getProfile reads from disk", function (assert) {
-    repo.saveProfile({
+test("getProfile reads from disk", function* (assert) {
+    yield repo.saveProfile({
         name: "my-profile",
         commands: {
             "command one": {
@@ -78,107 +57,69 @@ test("getProfile reads from disk", function (assert) {
                 args: ["app.js"]
             }
         }
-    })(function (err) {
-        assert.ifError(err)
-
-        repo.getProfile("my-profile")(function (err, profile) {
-            assert.ifError(err)
-            assert.equal(profile.name, "my-profile")
-            var command = profile.commands["command one"]
-            assert.equal(command.name, "command one")
-
-            assert.end()
-        })
     })
+
+    var profile = yield repo.getProfile("my-profile")
+    assert.equal(profile.name, "my-profile")
+    var command = profile.commands["command one"]
+    assert.equal(command.name, "command one")
 })
 
-test("addCommand works", function (assert) {
-    repo.addCommand("my-profile", {
+test("addCommand works", function* (assert) {
+    yield repo.addCommand("my-profile", {
         name: "command two",
         command: "node",
         args: ["api.js"]
-    })(function (err) {
-        assert.ifError(err)
-
-        repo.getProfile("my-profile")(function (err, profile) {
-            assert.ifError(err)
-
-            var keys = Object.keys(profile.commands)
-            var command = profile.commands["command two"]
-
-            assert.equal(keys.length, 2)
-            assert.equal(command.name, "command two")
-
-            assert.end()
-        })
     })
+
+    var profile = yield repo.getProfile("my-profile")
+    var keys = Object.keys(profile.commands)
+    var command = profile.commands["command two"]
+
+    assert.equal(keys.length, 2)
+    assert.equal(command.name, "command two")
 })
 
-test("editCommand works", function (assert) {
-    repo.editCommand("my-profile", {
+test("editCommand works", function* (assert) {
+    yield repo.editCommand("my-profile", {
         name: "command two",
         args: ["api.js", "--debug"]
-    })(function (err) {
-        assert.ifError(err)
-
-        repo.getProfile("my-profile")(function (err, profile) {
-            assert.ifError(err)
-
-            var keys = Object.keys(profile.commands)
-            var command = profile.commands["command two"]
-
-            assert.equal(keys.length, 2)
-            assert.equal(command.name, "command two")
-            assert.equal(command.command, "node")
-            assert.deepEqual(command.args, ["api.js", "--debug"])
-
-            assert.end()
-        })
     })
+
+    var profile = yield repo.getProfile("my-profile")
+
+    var keys = Object.keys(profile.commands)
+    var command = profile.commands["command two"]
+
+    assert.equal(keys.length, 2)
+    assert.equal(command.name, "command two")
+    assert.equal(command.command, "node")
+    assert.deepEqual(command.args, ["api.js", "--debug"])
 })
 
-test("getCommand works", function (assert) {
-    repo.getCommand("my-profile", "command two")(function (err, command) {
-        assert.ifError(err)
+test("getCommand works", function* (assert) {
+    var command = yield repo.getCommand("my-profile", "command two")
 
-        assert.equal(command.name, "command two")
-        assert.equal(command.command, "node")
-
-        assert.end()
-    })
+    assert.equal(command.name, "command two")
+    assert.equal(command.command, "node")
 })
 
-test("getProfiles returns profiles", function (assert) {
-    repo.getProfiles()(function (err, profiles) {
-        assert.ifError(err)
-        assert.equal(profiles.length, 2)
+test("getProfiles returns profiles", function* (assert) {
+    var profiles = yield repo.getProfiles()
+    assert.equal(profiles.length, 2)
 
-        assert.equal(profiles[0].name, "my-profile")
-        assert.equal(profiles[1].name, "named-profile")
-
-        assert.end()
-    })
+    assert.equal(profiles[0].name, "my-profile")
+    assert.equal(profiles[1].name, "named-profile")
 })
 
-test("removeProfile removes from disk", function (assert) {
-    repo.removeProfile("my-profile")(function (err) {
-        assert.ifError(err)
-        var loc = path.join(dir, "my-profile.json")
+test("removeProfile removes from disk", function* (assert) {
+    yield repo.removeProfile("my-profile")
 
-
-        fs.stat(loc, function (err) {
-            assert.ok(err)
-            assert.equal(err.code, "ENOENT")
-
-            assert.end()
-        })
-    })
+    var loc = path.join(dir, "my-profile.json")
+    var data = yield both(fs.stat.bind(null, loc))
+    assert.equal(data[0].code, "ENOENT")
 })
 
-test("cleanup disk", function (assert) {
-    repo.nukeProfiles()(function (err) {
-        assert.ifError(err)
-
-        assert.end()
-    })
+test("cleanup disk", function* (assert) {
+    yield repo.nukeProfiles()
 })

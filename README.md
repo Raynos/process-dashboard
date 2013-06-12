@@ -2,7 +2,7 @@
 
 [![build status][1]][2] [![Coverage Status][9]][10] [![davis dependency status][3]][4] [![gemnasium Dependency Status][11]][12] [![NPM version][7]][8]
 
-<!-- [![browser support][5]][6] -->
+[![browser support][5]][6]
 
 A dashboard for managing processes
 

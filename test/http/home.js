@@ -1,45 +1,34 @@
-var test = require("tape")
+var test = require("tape-continuable")
 var uuid = require("uuid")
+var async = require("gens")
 
-var nukeProfiles = require("../../repo/nuke-profiles")
-var saveProfile = require("../../repo/save-profile")
-var server = require("./_server")
+var repo = require("../../repo")
+var server = require("./_server.js")
 var request = server.request
 
 server.start()
 
-test("request main site", function (assert) {
-    request("/", function (err, res, body) {
-        assert.ifError(err)
-        assert.equal(res.statusCode, 200)
-        assert.notEqual(body.indexOf("Process dashboard"), -1)
+test("request main site", async(function* (assert) {
+    var res = yield request.bind(null, "/")
 
-        assert.end()
-    })
-})
+    assert.equal(res.statusCode, 200)
+    assert.notEqual(res.body.indexOf("Process dashboard"), -1)
+}))
 
-test("insert profile & request", function (assert) {
+test("insert profile & request", async(function* (assert) {
     var name = uuid()
-    saveProfile({ name: name })(function (err) {
-        assert.ifError(err)
+    yield repo.saveProfile({ name: name })
 
-        request("/", function (err, res, body) {
-            assert.ifError(err)
-            assert.equal(res.statusCode, 200)
-            assert.notEqual(body.indexOf(name), -1)
+    var res = yield request.bind(null, "/")
 
-            assert.end()
-        })
-    })
-})
+    assert.equal(res.statusCode, 200)
+    assert.notEqual(res.body.indexOf(name), -1)
+}))
 
-test("cleanup profiles", function (assert) {
-    nukeProfiles()(function (err) {
-        assert.ifError(err)
-        assert.end()
-    })
-})
+test("cleanup profiles", async(function* (assert) {
+    yield repo.nukeProfiles()
+}))
 
-test("close server", function (assert) {
-    server.close(assert)
-})
+test("close server", async(function* (assert) {
+    yield server.close()
+}))

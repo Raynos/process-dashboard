@@ -1,62 +1,49 @@
-var test = require("tape")
+var test = require("tape-continuable")
 var uuid = require("uuid")
+var async = require("gens")
 
-var nukeProfiles = require("../../repo/nuke-profiles")
-var getProfile = require("../../repo/get-profile")
-var server = require("./_server")
+var repo = require("../../repo")
+var server = require("./_server.js")
 var request = server.request
 
 var profileName = uuid()
 
 server.start()
 
-test("can put profile", function (assert) {
-    request({
+test("can put profile", async(function* (assert) {
+    var res = yield request.bind(null, {
         method: "PUT",
         uri: "/profiles/" + profileName,
         json: {
             name: profileName
         }
-    }, function (err, res, body) {
-        assert.ifError(err)
-        assert.equal(res.statusCode, 200)
-        assert.equal(body.message, "ok")
-
-        getProfile(profileName)(function (err, profile) {
-            assert.ifError(err)
-            assert.equal(profile.name, profileName)
-
-            assert.end()
-        })
     })
-})
 
-test("can delete profile", function (assert) {
-    request({
+    assert.equal(res.statusCode, 200)
+    assert.equal(res.body.message, "ok")
+
+    var profile = yield repo.getProfile(profileName)
+    assert.equal(profile.name, profileName)
+}))
+
+test("can delete profile", async(function* (assert) {
+    var res = yield request.bind(null, {
         method: "DELETE",
         uri: "/profiles/" + profileName,
         json: true
-    }, function (err, res, body) {
-        assert.ifError(err)
-        assert.equal(res.statusCode, 200)
-        assert.equal(body.message, "ok")
-
-        getProfile(profileName)(function (err, profile) {
-            assert.ifError(err)
-            assert.equal(profile, null)
-
-            assert.end()
-        })
     })
-})
 
-test("cleanup profiles", function (assert) {
-    nukeProfiles()(function (err) {
-        assert.ifError(err)
-        assert.end()
-    })
-})
+    assert.equal(res.statusCode, 200)
+    assert.equal(res.body.message, "ok")
 
-test("close server", function (assert) {
-    server.close(assert)
-})
+    var profile = yield repo.getProfile(profileName)
+    assert.equal(profile, null)
+}))
+
+test("cleanup profiles", async(function* () {
+    yield repo.nukeProfiles()
+}))
+
+test("close server", async(function* () {
+    yield server.close()
+}))

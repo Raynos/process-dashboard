@@ -1,5 +1,5 @@
 var rimraf = require("rimraf")
-var async = require("continuable-generators")
+var async = require("gens")
 
 var ensureDirectory = require("./ensure-directory")
 

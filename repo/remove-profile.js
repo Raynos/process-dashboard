@@ -1,6 +1,6 @@
 var fs = require("fs")
 var path = require("path")
-var async = require("continuable-generators")
+var async = require("gens")
 
 var ensureDirectory = require("./ensure-directory")
 

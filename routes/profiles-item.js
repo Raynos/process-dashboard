@@ -1,6 +1,6 @@
 var jsonBody = require("body/json")
 var sendJson = require("send-data/json")
-var async = require("continuable-generators")
+var async = require("gens")
 
 module.exports = function ProfileItem(repo) {
     return {

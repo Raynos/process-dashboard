@@ -1,52 +1,52 @@
 var path = require("path")
-var Router = require("routes-router")
+var RoutesRouter = require("routes-router")
 var Methods = require("http-methods")
-var NODE_ENV = require("node-env")
-var RequireFresh = require("require-fresh")
 var ServeBrowserify = require("serve-browserify")
 var ServeLess = require("npm-less/serve")
 var sendError = require("send-data/error")
 
-var repo = require("./repo")
-
-var loadTemplate = RequireFresh({
-    dir: path.join(__dirname, "templates"),
-    watch: NODE_ENV !== "production"
-})
-var router = Router()
-
-// assets & statics
-router.addRoute("/js/:appName",
-    ServeBrowserify(path.join(__dirname, "browser")))
-router.addRoute("/css/:appName",
-    ServeLess(path.join(__dirname, "styles")))
-
-// Load and inject dependencies into route handlers
 var Home = require("./routes/home.js")
 var ProfileItem = require("./routes/profiles-item.js")
 
-addRoute("/", Home(repo, loadTemplate))
-addRoute("/profiles/:id", ProfileItem(repo))
+module.exports = Router
 
-router.close = function () {
-    loadTemplate.close()
-}
+function Router(repo, loadTemplate) {
+    var router = RoutesRouter()
 
-module.exports = router
+    // assets & statics
+    router.addRoute("/js/:appName",
+        ServeBrowserify(path.join(__dirname, "browser")))
+    router.addRoute("/css/:appName",
+        ServeLess(path.join(__dirname, "styles")))
 
-function addRoute(uri, handler) {
-    if (typeof handler === "object") {
-        handler = Methods(handler)
+    // Load and inject dependencies into route handlers
+    addRoute("/", Home(repo, loadTemplate))
+    addRoute("/profiles/:id", ProfileItem(repo))
+
+    router.close = function () {
+        loadTemplate.close()
     }
 
-    router.addRoute(uri, function onRoute(req, res, params, splats) {
-        handler(req, res, {
-            params: params,
-            splats: splats
-        }, function (err) {
-            if (err) {
-                sendError(req, res, err)
+    return router
+
+    function addRoute(uri, handler) {
+        if (typeof handler === "object") {
+            handler = Methods(handler)
+        }
+
+        router.addRoute(uri, onRoute)
+
+        function onRoute(req, res, params, splats) {
+            handler(req, res, {
+                params: params,
+                splats: splats
+            }, writeError)
+
+            function writeError(err) {
+                if (err) {
+                    sendError(req, res, err)
+                }
             }
-        })
-    })
+        }
+    }
 }

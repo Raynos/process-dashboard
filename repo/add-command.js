@@ -1,4 +1,4 @@
-var async = require("continuable-generators")
+var async = require("gens")
 var getProfile = require("./get-profile")
 var saveProfile = require("./save-profile")
 

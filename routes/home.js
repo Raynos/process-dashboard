@@ -1,6 +1,6 @@
 var stringify = require("jsonml-stringify")
 var WriteHtml = require("write-html")
-var async = require("continuable-generators")
+var async = require("gens")
 
 module.exports = function Home(repo, loadTemplate) {
     return {

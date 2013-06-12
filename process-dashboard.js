@@ -1,12 +1,12 @@
 var http = require("http")
 var console = require("console")
-var argv = require("optimist").argv
 
-var router = require("./router")
+var config = require("./config/production.js")
+var Router = require("./router.js")
 
-var PORT = argv.port || argv.p || 5842
+var router = Router(config.repo, config.loadTemplate)
 var server = http.createServer(router)
 
-server.listen(PORT, function () {
-    console.log("running process dashboard on", PORT)
+server.listen(config.port, function () {
+    console.log("running process dashboard on", config.port)
 })

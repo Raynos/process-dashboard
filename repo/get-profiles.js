@@ -1,4 +1,4 @@
-var async = require("continuable-generators")
+var async = require("gens")
 var parallel = require("continuable-para")
 var fs = require("fs")
 

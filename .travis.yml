@@ -6,4 +6,4 @@ before_script:
  - nvm use v0.11.2
  - npm install
  - npm install istanbul coveralls
-script: npm travis-test
+script: npm run travis-test

@@ -67,7 +67,7 @@
     "test-browser": "testem-browser ./test/browser/index.js"
   },
   "testling": {
-    "files": "test/index.js",
+    "files": "test/browser/index.js",
     "browsers": [
       "ie/8..latest",
       "firefox/16..latest",

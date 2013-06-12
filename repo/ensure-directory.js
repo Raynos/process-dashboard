@@ -27,7 +27,7 @@ function* ensureDirectory() {
 }
 
 function processDashDirectory() {
-    return env.processDash_DIRECTORY || "process-dash"
+    return env.PDASH_DIRECTORY || "process-dash"
 }
 
 function home() {

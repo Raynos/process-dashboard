@@ -46,7 +46,8 @@
   "devDependencies": {
     "xtend": "~2.0.5",
     "request": "~2.21.0",
-    "tape-continuable": "~0.1.1"
+    "tape-continuable": "~0.1.1",
+    "request-proxy": "~0.1.0"
   },
   "licenses": [
     {

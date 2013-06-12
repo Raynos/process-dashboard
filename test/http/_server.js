@@ -1,8 +1,8 @@
 var http = require("http")
 var console = require("console")
 var cache = require("continuable-cache")
+var RequestProxy = require("request-proxy")
 
-var RequestProxy = require("../../lib/request-proxy.js")
 var Router = require("../../router.js")
 var config = require("../../config/production.js")
 

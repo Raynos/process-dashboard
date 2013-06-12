@@ -47,7 +47,8 @@
     "xtend": "~2.0.5",
     "request": "~2.21.0",
     "tape-continuable": "~0.1.1",
-    "request-proxy": "~0.1.0"
+    "request-proxy": "~0.1.0",
+    "tape": "~1.0.4"
   },
   "licenses": [
     {
@@ -61,7 +62,8 @@
     "start": "node --harmony ./process-dashboard.js",
     "watch": "nodemon --harmony -w ./process-dashboard.js -w ./router.js -w ./lib -w ./routes ./process-dashboard.js",
     "cover": "istanbul cover --report none --print detail ./test/index.js -- --harmony",
-    "view-cover": "istanbul report html && google-chrome ./coverage/index.html"
+    "view-cover": "istanbul report html && google-chrome ./coverage/index.html",
+    "test-browser": "testem-browser ./test/browser/index.js"
   },
   "testling": {
     "files": "test/index.js",

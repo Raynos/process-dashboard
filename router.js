@@ -14,10 +14,12 @@ function Router(repo, loadTemplate) {
     var router = RoutesRouter()
 
     // assets & statics
-    router.addRoute("/js/:appName",
-        ServeBrowserify(path.join(__dirname, "browser")))
-    router.addRoute("/css/:appName",
-        ServeLess(path.join(__dirname, "styles")))
+    router.addRoute("/js/:appName", ServeBrowserify({
+        root: path.join(__dirname, "browser")
+    }))
+    router.addRoute("/css/:appName", ServeLess({
+        root: path.join(__dirname, "styles")
+    }))
 
     // Load and inject dependencies into route handlers
     addRoute("/", Home(repo, loadTemplate))
@@ -34,18 +36,20 @@ function Router(repo, loadTemplate) {
             handler = Methods(handler)
         }
 
-        router.addRoute(uri, onRoute)
+        router.addRoute(uri, HandleRoute(handler))
+    }
+}
 
-        function onRoute(req, res, params, splats) {
-            handler(req, res, {
-                params: params,
-                splats: splats
-            }, writeError)
+function HandleRoute(handler) {
+    return function onRoute(req, res, params, splats) {
+        handler(req, res, {
+            params: params,
+            splats: splats
+        }, writeError)
 
-            function writeError(err) {
-                if (err) {
-                    sendError(req, res, err)
-                }
+        function writeError(err) {
+            if (err) {
+                sendError(req, res, err)
             }
         }
     }

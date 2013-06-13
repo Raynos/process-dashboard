@@ -24,3 +24,21 @@ test("client.addProfile", function (assert) {
         assert.end()
     })
 })
+
+test("client.removeProfile", function (assert) {
+    var _err = {}, _value = {}
+
+    var client = Client(function xhr(opts, callback) {
+        assert.equal(opts.uri, "/profiles/foobar")
+        assert.equal(opts.method, "DELETE")
+
+        callback(_err, _value)
+    })
+
+    client.removeProfile("foobar", function (err, value) {
+        assert.equal(err, _err)
+        assert.equal(value, _value)
+
+        assert.end()
+    })
+})

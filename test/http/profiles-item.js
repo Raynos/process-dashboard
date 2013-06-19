@@ -40,10 +40,7 @@ test("can delete profile", async(function* (assert) {
     assert.equal(profile, null)
 }))
 
-test("cleanup profiles", async(function* () {
+test("cleanup", async(function* () {
     yield repo.nukeProfiles()
-}))
-
-test("close server", async(function* () {
     yield server.close()
 }))

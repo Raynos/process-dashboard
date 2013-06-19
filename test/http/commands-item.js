@@ -78,10 +78,7 @@ test("can delete command", async(function* (assert) {
     assert.equal(Object.keys(profile.commands).length, 0)
 }))
 
-test("cleanup profiles", async(function* () {
+test("cleanup", async(function* () {
     yield repo.nukeProfiles()
-}))
-
-test("close server", async(function* () {
     yield server.close()
 }))

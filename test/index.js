@@ -7,3 +7,4 @@ require("./profile-repo.js")
 
 require("./http/home.js")
 require("./http/profiles-item.js")
+require("./http/commands-item.js")

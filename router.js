@@ -7,6 +7,7 @@ var sendError = require("send-data/error")
 
 var Home = require("./routes/home.js")
 var ProfileItem = require("./routes/profiles-item.js")
+var CommandItem = require("./routes/commands-item.js")
 
 module.exports = Router
 
@@ -24,6 +25,7 @@ function Router(repo, loadTemplate) {
     // Load and inject dependencies into route handlers
     addRoute("/", Home(repo, loadTemplate))
     addRoute("/profiles/:id", ProfileItem(repo))
+    addRoute("/profiles/:profileId/commands/:id", CommandItem(repo))
 
     router.close = function () {
         loadTemplate.close()

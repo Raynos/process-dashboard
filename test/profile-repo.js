@@ -105,6 +105,17 @@ test("getCommand works", async(function* (assert) {
     assert.equal(command.command, "node")
 }))
 
+test("removeCommand works", async(function* (assert) {
+    yield repo.removeCommand("my-profile", "command two")
+
+    var profile = yield repo.getProfile("my-profile")
+    var keys = Object.keys(profile.commands)
+
+    assert.equal(keys.length, 1)
+    assert.ok(!!profile.commands["command one"])
+    assert.equal(profile.commands["command two"], undefined)
+}))
+
 test("getProfiles returns profiles", async(function* (assert) {
     var profiles = yield repo.getProfiles()
     assert.equal(profiles.length, 2)

@@ -1,8 +1,9 @@
 var document = require("global/document")
+var window = require("global/window")
 var unpack = require("unpack-element")
+var Router = require("hash-router")
 var xhr = require("xhr")
 
-var Router = require("./lib/hash-router")
 var Client = require("./client")
 var Profiles = require("./profiles")
 
@@ -22,4 +23,5 @@ if (elems.profiles) {
 }
 
 // start router
-router.applyChange()
+window.addEventListener("hashchange", router)
+router()
